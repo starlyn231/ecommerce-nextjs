@@ -1,5 +1,6 @@
 import Announcemenet from "../components/announcemenet";
-import { NavbarSimple } from "../components/navbar";
+import NavbarSimple from "../components/navbar";
+
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,6 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="flex h-screen flex-col">{children}</div>
+
         </div>
     );
 }

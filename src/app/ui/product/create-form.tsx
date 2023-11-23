@@ -13,7 +13,7 @@ const Form = () => {
         <>
             <h1 className="mb-3 text-lg font-bold">Add Product</h1>
             <form action={dispatch}>
-                <div className="rounded-md bg-gray-50 p-4 md:p-6">
+                <div className="rounded-md  p-4 md:p-6">
 
 
                     <input

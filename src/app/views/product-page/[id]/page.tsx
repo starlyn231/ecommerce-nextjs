@@ -1,5 +1,7 @@
 import { getProduct } from "@/app/lib/data";
 import Image from "next/image"
+import AddToCartButton from "./AddToCartButton";
+import { incrementProductQuantity } from "@/app/lib/actions";
 interface ISize {
     id: number;
     label: string;
@@ -34,9 +36,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
                         </div>
                         <div className="flex -mx-2 mb-4">
                             <div className="w-1/2 px-2">
-                                <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
-                                    Add to Cart
-                                </button>
+                                <AddToCartButton
+                                    productId={id}
+                                    incrementProductQuantity={incrementProductQuantity}
+                                />
                             </div>
                             <div className="w-1/2 px-2">
                                 <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">

@@ -46,7 +46,7 @@ const Slider: FunctionComponent<DemoSliderProps> = ({ data }) => {
     /*    const [slides] = useState(ApiSlides); */
     console.log(data)
     return (
-        <div className='flex relative h-700 w-full'>
+        <div className=' relative h-700 w-full'>
 
             <Swiper
                 parallax={true}
@@ -65,15 +65,16 @@ const Slider: FunctionComponent<DemoSliderProps> = ({ data }) => {
                 className="mySwiper"
             >
                 {data.map(({ id, image, tagline, title, buttons }) => (
-                    <SwiperSlide key={id}>
+                    <SwiperSlide key={id} >
 
-                        <div className="relative w-full h-[500px]" >
+                        <div className="relative m-0 w-full  h-[590px]
+                          " >
 
                             <Image
                                 src={image}
-                                width={700}
-                                height={700}
-                                className="w-full object-fill rounded-t-lg"
+                                width={1000}
+                                height={500}
+                                className=" w-full h-full aspect-video hover:aspect-square"
                                 alt="Screenshots of the dashboard project showing desktop and mobile versions"
                             />
                             {/* Content overlay */}
@@ -87,13 +88,13 @@ const Slider: FunctionComponent<DemoSliderProps> = ({ data }) => {
                                     <p className="text-3xl sm:text-6xl lg:text-8xl font-bold text-white">
                                         {title}
                                     </p>
-                                    {buttons.length > 0 ? (
+                                    {/*        {buttons.length > 0 ? (
                                         <Button variant={'filled'} text='Shop' className="text-base bg-[teal]" >
                                             Shop
                                         </Button>
 
 
-                                    ) : null}
+                                    ) : null} */}
                                 </div>
                             </div>
                         </div>
