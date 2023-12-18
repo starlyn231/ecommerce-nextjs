@@ -5,12 +5,14 @@ import { ShoppingCart } from "../lib/db/cart";
 import { formatPrice } from "../lib/format";
 import { Popover, PopoverContent, PopoverHandler } from "@material-tailwind/react";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 interface ShoppingCartButtonProps {
     cart: ShoppingCart | null;
 }
 
 export default function ShoppingCartButton({ cart }: ShoppingCartButtonProps) {
+    const { data: session } = useSession();
     const [openPopover, setOpenPopover] = useState(false);
     const triggers = {
         onMouseEnter: () => setOpenPopover(true),

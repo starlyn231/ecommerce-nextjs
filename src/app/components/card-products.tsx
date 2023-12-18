@@ -1,10 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react';
 import { IDataProduct } from '../lib/definitions';
 import PriceTag from './PriceTag';
 import AddToCartButton from '../views/product-page/[id]/AddToCartButton';
-import { incrementProductQuantity } from '../lib/actions';
+import { addProductToLikes, incrementProductQuantity } from '../lib/actions';
+import { HeartIcon } from '@heroicons/react/24/outline';
+import LikeIcon from './like-icon';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import { getUserIdFromLocalStorage } from '../util/localstorage';
+import { cookies } from 'next/dist/client/components/headers';
 
 const CardProduct: FunctionComponent<IDataProduct> = ({
     id,
@@ -12,16 +18,15 @@ const CardProduct: FunctionComponent<IDataProduct> = ({
     price,
     imageUrl,
     description,
-    createdAt
+    createdAt,
 }) => {
     const isNew =
         Date.now() - new Date(createdAt).getTime() < 1000 * 60 * 60 * 24 * 7;
+    const userId: any = cookies().get('localUserId')?.value;
     return (
         <div className="group my-5  h-[400px] flex w-full max-w-xs flex-col overflow-hidden border border-gray-100 bg-white shadow-m ">
-
-            <Link key={id}
-                href={"/views/product-page/" + id}>
-                <div className='relative flex h-60 overflow-hidden'>
+            <Link key={id} href={'/views/product-page/' + id}>
+                <div className="relative flex h-60 overflow-hidden">
                     <Image
                         src={imageUrl}
                         width={1000}
@@ -30,25 +35,33 @@ const CardProduct: FunctionComponent<IDataProduct> = ({
                         alt="Screenshots of the dashboard project showing desktop and mobile versions"
                     />
                 </div>
-
             </Link>
             <div className=" h-ful">
-                <Link key={id}
-                    href={"/list-product/" + id}>
-                    <h3 className="text-gray-900 font-semibold text-xl tracking-tight dark:text-white 
-                     ml-2 whitespace-nowrap text-ellipsis overflow-hidden ">
+                <Link key={id} href={'/list-product/' + id}>
+                    <h3
+                        className="text-gray-900 font-semibold text-xl tracking-tight dark:text-white 
+                     ml-2 whitespace-nowrap text-ellipsis overflow-hidden "
+                    >
                         {name}
                     </h3>
                 </Link>
 
                 <div className="flex  flex-col m-2">
                     <div className="card-body my-1">
-
-                        {isNew && <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">NEW</span>}
+                        {isNew && (
+                            <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                NEW
+                            </span>
+                        )}
                         {/* <p>{description}</p> */}
 
-                        <PriceTag className='text-3xl font-bold text-slate-900' price={price} />
-                        <span className="text-sm ml-2 text-slate-900 line-through">$99</span>
+                        <PriceTag
+                            className="text-3xl font-bold text-slate-900"
+                            price={price}
+                        />
+                        <span className="text-sm ml-2 text-slate-900 line-through">
+                            $99
+                        </span>
                     </div>
                     {/*      <button className="flex my-3 items-center justify-center w-[50%] bg-gray-900 px-2 py-1 text-sm text-white transition hover:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -56,17 +69,21 @@ const CardProduct: FunctionComponent<IDataProduct> = ({
                         </svg>
                         Add to cart
                     </button> */}
-                    <AddToCartButton
-                        productId={id}
-                        incrementProductQuantity={incrementProductQuantity}
-                    />
+                    <div className="flex justify-between mt-2">
+                        <AddToCartButton
+                            productId={id}
+                            incrementProductQuantity={incrementProductQuantity}
+                        />
+                        <LikeIcon
+                            addProductToLikes={addProductToLikes}
+                            productId={id}
+                            userId={userId}
+                        />
+                    </div>
                 </div>
-
             </div>
         </div>
-
-
-    )
-}
+    );
+};
 
 export default CardProduct;

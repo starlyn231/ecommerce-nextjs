@@ -10,7 +10,7 @@ const Page = () => {
 
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(addProduct, initialState);
-    console.log(state)
+
     return (
         <div className="mt-5 bg-gray-50 rounded-lg shadow mx-auto md:w-2/3">
             <div className="flex"></div>

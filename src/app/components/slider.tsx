@@ -40,11 +40,7 @@ import { Button } from "./buttons";
   }); */
 const Slider: FunctionComponent<DemoSliderProps> = ({ data }) => {
     const [parallaxSwiper, setparallaxSwiper] = useState(null)
-    //const parallaxAumount = parallaxSwiper ? parallaxSwiper.width * 0.95 : 0;
     const parallaxOpacity = 0.5;
-
-    /*    const [slides] = useState(ApiSlides); */
-    console.log(data)
     return (
         <div className=' relative h-700 w-full'>
 

@@ -8,7 +8,6 @@ import FormSubmitButton from "@/app/components/FormSubmitButton";
 const Form = () => {
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(addProduct, initialState);
-    console.log(state)
     return (
         <>
             <h1 className="mb-3 text-lg font-bold">Add Product</h1>

@@ -1,5 +1,6 @@
 "use client"
 
+import { Alert } from "@material-tailwind/react";
 import { useState, useTransition } from "react";
 
 interface AddToCartButtonProps {
@@ -13,20 +14,31 @@ export default function AddToCartButton({
 }: AddToCartButtonProps) {
     const [isPending, startTransition] = useTransition();
     const [success, setSuccess] = useState(false);
-    console.log(isPending)
+
+    const addToCart = async () => {
+        try {
+            // Llama a la función del servidor
+            setSuccess(false);
+            startTransition(async () => {
+                await incrementProductQuantity(productId);
+            });
+            // Si no hubo excepciones, entonces la transición fue exitosa
+            setSuccess(true);
+            // Si la función no lanzó una excepción, consideramos que fue exitosa
+            setSuccess(true);
+            if (!isPending && success) return alert(' agregado correcta')
+
+        } catch (error) {
+            // Manejar el error si la función del servidor falla
+            console.error("Error al agregar al carrito:", error);
+            setSuccess(false); // Puedes optar por no cambiar el estado si hay un error
+        }
+    };
     return (
         <div className="flex items-center gap-2">
             <button
                 className="flex mr-2 bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700"
-                onClick={() => {
-                    console.log('onclick', productId)
-                    setSuccess(false);
-                    startTransition(async () => {
-                        await incrementProductQuantity(productId);
-                        console.log('startTransition');
-                        setSuccess(true);
-                    });
-                }}
+                onClick={addToCart}
             >
                 Add to Cart
                 <svg
@@ -45,9 +57,11 @@ export default function AddToCartButton({
                 </svg>
             </button>
             {isPending && <span className="loading loading-spinner loading-md" />}
-            {!isPending && success && (
-                <span className="text-success">Added to Cart.</span>
-            )}
+            {/*    {!isPending && success && (
+                <Alert color="green">
+                    A success alert for showing message.
+                </Alert>
+            )} */}
         </div>
     )
 }

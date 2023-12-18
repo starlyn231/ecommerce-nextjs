@@ -2,8 +2,9 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { lato, roboto } from './util/fonts'
-
 import ThemeProvider from '../../providerMT'
+import SessionProvider from "./SessionProvider";
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,9 +16,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
+
   return (
     <html lang="en">
-      <ThemeProvider>  <body className={lato.className}>{children}</body></ThemeProvider>
+
+
+
+      <ThemeProvider>
+        <SessionProvider>
+
+
+          <body className={lato.className}>{children}</body>
+        </SessionProvider>
+      </ThemeProvider>
+
     </html>
   )
 }

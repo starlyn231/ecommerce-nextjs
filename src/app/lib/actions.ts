@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createCart, getCart } from './db/cart';
 
+
 const FormSchema = z.object({
     id: z.string(),
     name: z.string().min(4, { message: "product must be atleast 4 characters" }),
@@ -82,27 +83,29 @@ export async function incrementProductQuantity(productId: string) {
     const cart = (await getCart()) ?? (await createCart());
 
     const articleInCart = cart.items.find((item) => item.productId === productId);
-    console.log('no entro')
+
     if (articleInCart) {
-        console.log('update')
         await prisma.cartItem.update({
             where: { id: articleInCart.id },
             data: { quantity: { increment: 1 } },
         });
-    } else {
-        console.log('create')
-        await prisma.cartItem.create({
 
+    } else {
+
+        await prisma.cartItem.create({
             data: {
                 cartId: cart.id,
                 productId,
                 quantity: 1,
             },
+
         });
+
     }
 
     revalidatePath("/product-page/[id]");
 }
+
 
 /* async function searchProducts(formData: FormData) {
     "use server";
@@ -145,3 +148,103 @@ export async function setProductQuantity(productId: string, quantity: number) {
 
     revalidatePath("/cart");
 }
+
+
+export async function addProductToLikes(userId: string, productId: string) {
+
+    try {
+        // Fetch the product and its likedBy relation
+        const product = await prisma.products.findUnique({
+            where: { id: productId },
+            include: { likedBy: { where: { userId } } },
+        });
+
+        if (!product) {
+            console.log('Product not found with the specified productId:', productId);
+            return;
+        }
+
+        // Check if the user has already liked the product
+        const userLikeIndex = product.likedBy.findIndex((like) => like.userId === userId);
+        if (userLikeIndex !== -1) {
+            console.log('  delete')
+            await prisma.userLikes.delete({
+                where: {
+                    id: product.likedBy[userLikeIndex].id,
+                },
+            });
+        } else {
+            // If like does not exist, add the like
+            await prisma.userLikes.create({
+                data: {
+                    userId: userId,
+                    productId: productId,
+                },
+            });
+        }
+
+        // Update the likedByCurrentUser field in the Product model
+        const updatedProduct = await prisma.products.findUnique({
+            where: { id: productId },
+            include: { likedBy: { where: { userId } } },
+        });
+        if (updatedProduct) {
+            const likedByCurrentUser = updatedProduct.likedBy.length > 0;
+            await prisma.products.update({
+                where: { id: productId },
+                data: { likedByCurrentUser },
+            });
+
+
+            // Consulta si ya le gusta al usuario actual
+            const likeOrNot = await prisma.userLikes.findFirst({
+                where: {
+                    userId: userId,
+                    productId: productId,
+                },
+            });
+            // Devuelve la cantidad total de "me gusta" y la información de "me gusta" actualizada
+            return {
+                likedByCurrentUser,
+                likeInfo: likeOrNot,
+            };
+        }
+    }
+    catch (error) {
+        console.error('Error toggling product like:', error);
+        throw error;
+    }
+
+}
+
+export async function existingLike(userId: string, productId: string) {
+    try {
+        const likeOrNot = await prisma.userLikes.findFirst({
+            where: {
+                userId: userId,
+                productId: productId,
+            },
+        });
+
+        // Retorna true si existe una relación de like, false si no existe
+        return !!likeOrNot;
+    } catch (error) {
+        console.error('Error al obtener el estado de "me gusta":', error);
+        throw error;
+    }
+}
+
+
+/* export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', Object.fromEntries(formData));
+    } catch (error) {
+        if ((error as Error).message.includes('CredentialsSignin')) {
+            return 'CredentialSignin';
+        }
+        throw error;
+    }
+} */

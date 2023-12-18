@@ -4,12 +4,11 @@ import { prisma } from '@/app/lib/db/prisma';
 import CardProduct from '@/app/components/card-products';
 import Slider from '@/app/components/slider';
 import ActiveSlider from '@/app/components/card-slider';
-
 export default async function Home() {
     const productsItem = await prisma?.products.findMany({
         orderBy: { id: 'desc' },
     });
-
+    console.log(productsItem)
     return (
         <div className="flex flex-col w-full items-center ">
             <Slider data={dataSlider} />
@@ -62,6 +61,7 @@ export default async function Home() {
 
 
             </div>
+
         </div>
     );
 }

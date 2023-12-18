@@ -15,11 +15,12 @@ export type ShoppingCart = CartWithProducts & {
     subtotal: number;
 };
 
-export const getCart = async () =>
-    new Promise<ShoppingCart>(async (resolve) => {
-        const localCartId = cookies().get("localCartId")?.value;
-        const cart = localCartId
+export const getCart = async () => {
+    /*    new Promise<ShoppingCart>(async (resolve) => { */
+    const localCartId = cookies().get("localCartId")?.value;
 
+    try {
+        const cart = localCartId
             ? await prisma.cart.findUnique({
                 where: { id: localCartId },
                 include: { items: { include: { products: true } } },
@@ -28,9 +29,24 @@ export const getCart = async () =>
         if (!cart) {
             return null;
         }
+        return {
+            ...cart,
+            size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
+            subtotal: cart.items.reduce(
+                (acc, item) => acc + item.quantity * item.products.price,
+                0
+            ),
+        };
+    } catch (error) {
+        console.error("Error in getCart:", error);
+        throw error; // Rechaza la promesa en caso de error
+    }
+};
 
 
-        resolve({
+
+
+/*         resolve({
             ...cart,
             size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
             subtotal: cart.items.reduce(
@@ -38,7 +54,7 @@ export const getCart = async () =>
                 0
             ),
         })
-    })
+    }) */
 
 /* 
 const getCart = async ():ShoppingCart | null  => {

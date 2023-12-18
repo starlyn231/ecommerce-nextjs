@@ -3,6 +3,7 @@ import {
   UserGroupIcon,
   HomeIcon,
   UserIcon,
+  HeartIcon,
   ShoppingBagIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
@@ -13,6 +14,9 @@ import { Button } from './buttons';
 import ShoppingCartButton from './ShoppingCartButton';
 import { ShoppingCart, getCart } from '../lib/db/cart';
 import { useEffect, useState } from 'react';
+import UserMenuButton from './UserMenuButton';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -24,12 +28,24 @@ const links = [
   },
 
   { href: '/views/cart', icon: 'cart' },
-  { href: '/views/profile', icon: UserIcon },
+  { href: '/views/profile', icon: 'UserIcon' },
+  { href: '/views/like', icon: HeartIcon },
 ];
 
 export default function NavLinks() {
   const [cart, setCart] = useState<ShoppingCart | null>(null);
+  const [sessionData, setSession] = useState<any | null>(null);
   const pathname = usePathname();
+
+  const fetchSession = async () => {
+
+    try {
+      const session = getServerSession(authOptions);
+      setSession(session);
+    } catch (error) {
+      console.error('Error fetching session:', error);
+    }
+  };
   const fetchCart = async () => {
     try {
       const cartData = await getCart();
@@ -39,8 +55,13 @@ export default function NavLinks() {
     }
   };
   useEffect(() => {
+
     fetchCart();
+    fetchSession();
+
+
   }, []);
+
   return (
     <>
       {links.map((link) => {
@@ -63,6 +84,9 @@ export default function NavLinks() {
                   <ShoppingCartButton cart={cart} />
                 ) : (
                   <LinkIcon className="w-8 h-8 mr-3 " />
+                )}
+                {link.icon === 'UserIcon' && (
+                  <UserMenuButton session={sessionData} />
                 )}
               </div>
             )}
