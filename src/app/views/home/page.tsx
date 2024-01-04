@@ -20,7 +20,7 @@ export default async function Home() {
                     className="pb-3 text-[18px] text-[#222] font-bold tracking-tight 
                 uppercase md:text-[24px] lg:text-[28px] xl:text-[32px] "
                 >
-                    {' '}
+
                     TOP COLLECTION
                 </h2>
 

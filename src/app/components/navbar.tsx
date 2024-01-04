@@ -15,6 +15,7 @@ import { getLikes } from '../lib/like';
 export default async function NavbarSimple() {
     const session = await getServerSession(authOptions);
     const cart = await getCart();
+    console.log(session)
     return (
         <div className="bg-base-100 ">
             <div className=" navbar mx-5 flex justify-between space gap-2 sm:flex-row">
@@ -26,7 +27,7 @@ export default async function NavbarSimple() {
                 </div>
                 <div className="flex items-center justify-center gap-2">
                     {/*  <button className='bg-blue-gray-200'>  <Link href="view/profile">dd</Link></button> */}
-                    <ShoppingCartButton cart={cart} />
+                    <ShoppingCartButton cart={cart} session={session} />
                     <UserMenuButton session={session} />
                     <Link href="/views/liked-products">
 
