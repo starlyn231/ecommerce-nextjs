@@ -21,6 +21,26 @@ import Image from 'next/image';
 import SliderButton from '../../../components/slider-card-buttons';
 
 const Slidercard = (data: any) => {
+    const majorityElement = (nums: any) => {
+        let candidate = 0;
+        let count = 0;
+        for (let i = 0; i <= nums.length; i++) {
+            //  console.log('count', count)
+            if (count === 0) candidate = nums[i];
+
+            if (nums[i] === candidate) {
+                count += 1;
+            }
+            else count -= 1;
+
+        }
+        // console.log(candidate);
+    }
+    majorityElement([5, 2, 1, 1, 1, 2, 2])
+
+
+
+
     return (
         <div className="w-[80%] mb-3">
             <Swiper

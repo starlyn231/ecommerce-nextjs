@@ -15,20 +15,26 @@ export type ShoppingCart = CartWithProducts & {
     subtotal: number;
 };
 
-export const getCart = async () => {
-    /*    new Promise<ShoppingCart>(async (resolve) => { */
-    const localCartId = cookies().get("localCartId")?.value;
-
+export const getCart = async (userId: string) => {
+    //const localCartId = cookies().get("localCartId")?.value;
     try {
-        const cart = localCartId
-            ? await prisma.cart.findUnique({
-                where: { id: localCartId },
-                include: { items: { include: { products: true } } },
-            })
-            : null;
+        /*    const cart = localCartId
+               ? await prisma.cart.findUnique({
+                   where: { id: localCartId },
+                   include: { items: { include: { products: true } } },
+               })
+               : null; */
+        console.log(userId)
+
+        const cart = await prisma.cart.findFirst({
+            where: { userId: userId },
+            include: { items: { include: { products: true } } },
+        });
+        console.log('cart Getcart', cart)
         if (!cart) {
             return null;
         }
+
         return {
             ...cart,
             size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
@@ -43,44 +49,14 @@ export const getCart = async () => {
     }
 };
 
-
-
-
-/*         resolve({
-            ...cart,
-            size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
-            subtotal: cart.items.reduce(
-                (acc, item) => acc + item.quantity * item.products.price,
-                0
-            ),
-        })
-    }) */
-
-/* 
-const getCart = async ():ShoppingCart | null  => {
-
-
-return {
-    ...cart,
-    size: cart.items.reduce((acc, item) => acc + item.quantity, 0),
-    subtotal: cart.items.reduce(
-        (acc, item) => acc + item.quantity * item.products.price,
-        0
-    ),
-};
-} */
-/* export async function getCart(): ShoppingCart | null {
-
-  
-} */
-
-export async function createCart(): Promise<ShoppingCart> {
+export async function createCart(userId: string): Promise<ShoppingCart> {
+    console.log('this userId', userId)
     const newCart = await prisma.cart.create({
         data: {
-
+            userId: userId,
         }
     })
-    // Note: Needs encryption + secure settings in real production app
+
     cookies().set('localCartId', newCart.id)
     return {
         ...newCart,

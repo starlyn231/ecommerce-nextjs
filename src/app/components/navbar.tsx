@@ -12,10 +12,12 @@ import Image from 'next/image';
 import { getServerSession } from "next-auth/next"
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { getLikes } from '../lib/like';
+import { cookies } from 'next/dist/client/components/headers';
 export default async function NavbarSimple() {
     const session = await getServerSession(authOptions);
-    const cart = await getCart();
-    console.log(session)
+    const userId: any = cookies().get('localUserId')?.value;
+    const cart = await getCart(userId);
+    console.log(cart)
     return (
         <div className="bg-base-100 ">
             <div className=" navbar mx-5 flex justify-between space gap-2 sm:flex-row">

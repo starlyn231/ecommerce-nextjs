@@ -1,16 +1,18 @@
 "use client"
-
-import { Alert } from "@material-tailwind/react";
 import { useState, useTransition } from "react";
 
 interface AddToCartButtonProps {
+
     productId: string;
-    incrementProductQuantity: (productId: string) => Promise<void>;
+    incrementProductQuantity: (userId: string, productId: string) => Promise<void>;
+    userId: string,
 }
 
 export default function AddToCartButton({
     productId,
     incrementProductQuantity,
+    userId
+
 }: AddToCartButtonProps) {
     const [isPending, startTransition] = useTransition();
     const [success, setSuccess] = useState(false);
@@ -20,7 +22,7 @@ export default function AddToCartButton({
             // Llama a la función del servidor
             setSuccess(false);
             startTransition(async () => {
-                await incrementProductQuantity(productId);
+                await incrementProductQuantity(userId, productId);
             });
             // Si no hubo excepciones, entonces la transición fue exitosa
             setSuccess(true);

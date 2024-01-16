@@ -4,13 +4,17 @@ import CartEntry from "./cart-entry";
 import { setProductQuantity } from "@/app/lib/actions";
 import { formatPrice } from "@/app/lib/format";
 import Slidercard from "./components/slider";
+import { cookies } from "next/dist/client/components/headers";
 
 export const metadata = {
     title: "Your Cart - Flowmazon",
 };
 export default async function CartPage() {
-    const cart = await getCart();
 
+    const userId: any = cookies().get('localUserId')?.value;
+    const cart = await getCart(userId);
+    console.log(cart)
+    console.log(userId)
     return (
         <div className="w-[100%] bg-gray-100 pt-20 ">
             <h1 className="mb-10 text-center text-2xl font-bold">Shopping Cart</h1>
@@ -18,6 +22,7 @@ export default async function CartPage() {
                 <div className="rounded-lg  md:w-full">
                     {cart?.items.map((cartItem) => (
                         <CartEntry
+                            userId={userId}
                             cartItem={cartItem}
                             key={cartItem.id}
                             setProductQuantity={setProductQuantity}

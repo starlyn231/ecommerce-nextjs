@@ -24,7 +24,7 @@ interface ILikeItem {
 
 export const getLikes = async () => {
     const userId: any = cookies().get('localUserId')?.value;
-    console.log(userId)
+    //console.log(userId)
     try {
 
         const likedProduct = userId
@@ -34,7 +34,7 @@ export const getLikes = async () => {
                 include: { product: true },
             })
             : null;
-        console.log(likedProduct)
+        // console.log(likedProduct)
         if (!likedProduct) {
             return null;
         } else return likedProduct;

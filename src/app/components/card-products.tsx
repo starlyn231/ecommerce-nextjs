@@ -73,6 +73,7 @@ const CardProduct: FunctionComponent<IDataProduct> = ({
                         <AddToCartButton
                             productId={id}
                             incrementProductQuantity={incrementProductQuantity}
+                            userId={userId}
                         />
                         <LikeIcon
                             addProductToLikes={addProductToLikes}

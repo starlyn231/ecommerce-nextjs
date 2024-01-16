@@ -79,11 +79,12 @@ export async function addProduct(prevState: State, formData: FormData) {
  * @param {string} productId - The `productId` parameter is a string that represents the unique
  * identifier of a product.
  */
-export async function incrementProductQuantity(productId: string) {
-    const cart = (await getCart()) ?? (await createCart());
+export async function incrementProductQuantity(userId: string, productId: string) {
+    console.log(userId)
+    const cart = (await getCart(userId)) ?? (await createCart(userId));
 
     const articleInCart = cart.items.find((item) => item.productId === productId);
-
+    console.log(articleInCart)
     if (articleInCart) {
         await prisma.cartItem.update({
             where: { id: articleInCart.id },
@@ -118,11 +119,11 @@ export async function incrementProductQuantity(productId: string) {
 }  */
 
 
-export async function setProductQuantity(productId: string, quantity: number) {
-    const cart = (await getCart()) ?? (await createCart());
+export async function setProductQuantity(userId: string, productId: string, quantity: number) {
+    const cart = (await getCart(userId)) ?? (await createCart(userId));
 
     const articleInCart = cart.items.find((item) => item.productId === productId);
-
+    console.log('articleInCart', articleInCart)
     if (quantity === 0) {
         if (articleInCart) {
             await prisma.cartItem.delete({

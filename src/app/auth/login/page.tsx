@@ -133,7 +133,6 @@ function IconLoading() {
 }
 function LoginButton(loading: boolean) {
 
-    console.log(loading)
     return (
         <Button status={loading} className="w-full bg-[teal] text-white p-3 rounded-lg mt-2" /* aria-disabled={pending} */ >
             {!loading ? (

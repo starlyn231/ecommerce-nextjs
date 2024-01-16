@@ -2,6 +2,7 @@ import { getProduct } from "@/app/lib/data";
 import Image from "next/image"
 import AddToCartButton from "./AddToCartButton";
 import { incrementProductQuantity } from "@/app/lib/actions";
+import { cookies } from "next/dist/client/components/headers";
 interface ISize {
     id: number;
     label: string;
@@ -16,6 +17,8 @@ const sizeMockup: ISize[] = [
 ];
 export default async function ProductPage({ params }: { params: { id: string } }) {
     const id = params.id;
+    const userId: any = cookies().get('localUserId')?.value;
+    console.log(userId)
     const { name, imageUrl, description, price }: any = await getProduct(id);
     return (
 
@@ -39,6 +42,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                                 <AddToCartButton
                                     productId={id}
                                     incrementProductQuantity={incrementProductQuantity}
+                                    userId={userId}
                                 />
                             </div>
                             <div className="w-1/2 px-2">

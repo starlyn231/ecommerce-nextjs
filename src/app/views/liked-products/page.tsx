@@ -6,7 +6,7 @@ import Image from "next/image"
 
 export default async function ProductPage() {
     const likeOfUser = await getLikes();
-    console.log(likeOfUser)
+    //console.log(likeOfUser)
     return (
 
         <div className="bg-gray-100 dark:bg-gray-800 py-8 h-full ">

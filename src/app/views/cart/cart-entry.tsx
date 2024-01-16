@@ -7,14 +7,19 @@ import { useTransition } from "react";
 
 
 interface CartEntryProps {
+    userId: string,
     cartItem: CartItemWithProduct;
-    setProductQuantity: (productId: string, quantity: number) => Promise<void>;
+    setProductQuantity: (userId: string, productId: string, quantity: number) => Promise<void>;
+
 }
 
 export default function CartEntry({
+    userId,
     cartItem: { products, quantity },
     setProductQuantity,
 }: CartEntryProps) {
+
+
     const [isPending, startTransition] = useTransition();
 
     const quantityOptions: JSX.Element[] = [];
@@ -59,7 +64,7 @@ export default function CartEntry({
                                 onChange={(e) => {
                                     const newQuantity = parseInt(e.currentTarget.value);
                                     startTransition(async () => {
-                                        await setProductQuantity(products.id, newQuantity);
+                                        await setProductQuantity(userId, products.id, newQuantity);
                                     });
                                 }}
                             >
