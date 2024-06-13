@@ -17,7 +17,7 @@ export default async function NavbarSimple() {
     const session = await getServerSession(authOptions);
     const userId: any = cookies().get('localUserId')?.value;
     const cart = await getCart(userId);
-    console.log(cart)
+
     return (
         <div className="bg-base-100 ">
             <div className=" navbar mx-5 flex justify-between space gap-2 sm:flex-row">

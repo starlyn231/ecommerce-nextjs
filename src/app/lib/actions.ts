@@ -14,7 +14,7 @@ const FormSchema = z.object({
         .gt(0, { message: 'Please enter an amount greater than $0.' }),
     description: z.string().min(12, { message: "Description of product must be atleast 12 characters" }),
     imageUrl: z.string().min(1, { message: "Please insert a product image" }),
-
+    category: z.string(),
 });
 
 const CreateProduct = FormSchema.omit({ id: true, date: true });
@@ -23,6 +23,7 @@ export type State = {
         name?: string[];
         description?: string[];
         price?: number[];
+        category?: number[];
         imageUrl?: string[];
     };
     message?: string | null;
@@ -41,6 +42,7 @@ export async function addProduct(prevState: State, formData: FormData) {
     const validatedFields = CreateProduct.safeParse({
         name: formData.get('name'),
         description: formData.get('description'),
+        category: formData.get('category'),
         imageUrl: formData.get('imageUrl'),
         price: formData.get('price'),
     });
@@ -52,11 +54,11 @@ export async function addProduct(prevState: State, formData: FormData) {
             message: 'Missing Fields. Failed to Create product.',
         };
     }
-    const { name, description, imageUrl, price } = validatedFields.data;
+    const { name, description, imageUrl, price, category } = validatedFields.data;
 
     try {
         await prisma.products.create({
-            data: { name, description, imageUrl, price },
+            data: { name, description, imageUrl, price, category },
         });
     } catch (error) {
         // If a database error occurs, return a more specific error.
@@ -79,7 +81,10 @@ export async function addProduct(prevState: State, formData: FormData) {
  * @param {string} productId - The `productId` parameter is a string that represents the unique
  * identifier of a product.
  */
-export async function incrementProductQuantity(userId: string, productId: string) {
+export async function incrementProductQuantity({ userId,
+    productId,
+    color,
+    size }: any) {
     console.log(userId)
     const cart = (await getCart(userId)) ?? (await createCart(userId));
 
@@ -88,7 +93,11 @@ export async function incrementProductQuantity(userId: string, productId: string
     if (articleInCart) {
         await prisma.cartItem.update({
             where: { id: articleInCart.id },
-            data: { quantity: { increment: 1 } },
+            data: {
+                quantity: { increment: 1 },
+                color: color || articleInCart.color,
+                size: size || articleInCart.size,
+            },
         });
 
     } else {
@@ -98,6 +107,9 @@ export async function incrementProductQuantity(userId: string, productId: string
                 cartId: cart.id,
                 productId,
                 quantity: 1,
+                color,
+                size,
+
             },
 
         });
@@ -234,18 +246,28 @@ export async function existingLike(userId: string, productId: string) {
         throw error;
     }
 }
+const PRODUCTS_PER_PAGE = 10; // Número de productos por página
 
-
-/* export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData,
-) {
+export async function fetchProductsByCategory(query: string, searchParams?: { page?: string }) {
     try {
-        await signIn('credentials', Object.fromEntries(formData));
+        const currentPage = Number(searchParams?.page) || 1; // Obtener el número de página actual de los parámetros de la consulta
+        const offset = (currentPage - 1) * PRODUCTS_PER_PAGE; // Calcular el desplazamiento basado en la página actual
+
+        const productsByCategory = await prisma.products.findMany({
+            where: {
+                category: query // Usar el término de búsqueda como la categoría
+            },
+            orderBy: { id: 'desc' },
+            skip: offset, // Omitir los productos anteriores a la página actual
+            take: PRODUCTS_PER_PAGE // Tomar solo el número de productos por página
+        });
+
+        const count = await prisma.products.count({ where: { category: query } });
+        const totalPages = Math.ceil(count / PRODUCTS_PER_PAGE); // Calcular el número total de páginas
+        console.log(totalPages)
+        return totalPages;
     } catch (error) {
-        if ((error as Error).message.includes('CredentialsSignin')) {
-            return 'CredentialSignin';
-        }
-        throw error;
+        console.error('Error fetching products by category:', error);
+        throw new Error('Failed to fetch products by category.');
     }
-} */
+}

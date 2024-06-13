@@ -1,0 +1,116 @@
+//Input.tsx 
+
+'use client';
+
+import { InputHTMLAttributes, forwardRef } from 'react';
+
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+    error?: string;
+    label: string;
+}
+
+const Input = forwardRef<HTMLInputElement, Props>(function Input(
+    { name, error, label, required, className, ...rest },
+    ref
+) {
+    return (
+        <fieldset className= {`flex flex-col ${className ? className : ''}`
+} >
+    <label htmlFor={ name } className = "text-sm font-semibold mb-1 w-fit" >
+    { label + (required ? ' *' : '')}
+</label>
+    < input
+ref = { ref }
+id = { name }
+name = { name }
+{...rest }
+className = "ring-1 ring-gray-500 rounded-sm p-3 shadow-md w-full"
+    />
+    { error && <span className="text-sm text-red-600" > { error } < /span>}
+        < /fieldset>
+  );
+});
+
+export default Input;
+
+// src/components/Select.tsx
+
+'use client';
+
+
+import { SelectHTMLAttributes, forwardRef } from 'react';
+
+interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
+    error?: string;
+    label: string;
+    options: string[];
+}
+
+const Select = forwardRef<HTMLSelectElement, Props>(function Select(
+    { name, error, label, required, className, options, ...rest },
+    ref
+) {
+    return (
+        <fieldset className= {`flex flex-col ${className ? className : ''}`
+} >
+    <label htmlFor={ name } className = "text-sm font-semibold mb-1" >
+    { label + (required ? ' *' : '')}
+</label>
+    < select
+ref = { ref }
+id = { name }
+name = { name }
+{...rest }
+className = "ring-1 ring-gray-500 rounded-sm p-3 shadow-md"
+    >
+    <option key="" value = "" >
+        Choose an option...
+</option>
+{
+    options.map((option) => (
+        <option key= { option } value = { option } >
+        { option }
+        < /option>
+    ))
+}
+</select>
+{
+    error && <span className="text-sm text-red-600" > { error } < /span>}
+        < /fieldset>
+  );
+});
+
+export default Select;
+
+
+// src/components/Checkbox.tsx
+
+'use client';
+
+import { InputHTMLAttributes, forwardRef } from 'react';
+
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+    error?: string;
+    label: string;
+}
+
+const Checkbox = forwardRef<HTMLInputElement, Props>(function Checkbox(
+    { name, error, label, required, className, ...rest },
+    ref
+) {
+    return (
+        <fieldset className= {`flex ${className ? className : ''}`
+} >
+    <input ref={ ref } id = { name } name = { name } { ...rest } type = "checkbox" />
+    <label htmlFor={ name } className = "text-sm font-semibold ml-1 w-fit" >
+    { label + (required ? ' *' : '')}
+</label>
+{
+    error && <span className="text-sm text-red-600" > { error } < /span>}
+        < /fieldset>
+  );
+});
+
+export default Checkbox;
+
+// https://blog.stackademic.com/upgrade-your-full-stack-form-validation-with-zod-and-react-hook-form-in-next-js-107b014628a3

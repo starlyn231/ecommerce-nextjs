@@ -108,31 +108,31 @@ export default function Footer() {
                         Company
                     </h2>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Blog
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Pricing
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         About Us
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Contact us
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Testimonials
@@ -143,25 +143,25 @@ export default function Footer() {
                         Support
                     </h2>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Legal policy
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Status policy
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Privacy policy
                     </a>
                     <a
-                        href="javascript:void(0)"
+                        href="#"
                         className="focus:outline-none focus:underline hover:text-gray-500 text-base leading-4 mt-6 text-gray-800 dark:text-white cursor-pointer"
                     >
                         Terms of service

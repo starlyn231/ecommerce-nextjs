@@ -5,16 +5,20 @@ import { setProductQuantity } from "@/app/lib/actions";
 import { formatPrice } from "@/app/lib/format";
 import Slidercard from "./components/slider";
 import { cookies } from "next/dist/client/components/headers";
+import CheckoutButton from "./components/button-checkout";
 
 export const metadata = {
     title: "Your Cart - Flowmazon",
 };
 export default async function CartPage() {
 
+
     const userId: any = cookies().get('localUserId')?.value;
     const cart = await getCart(userId);
     console.log(cart)
     console.log(userId)
+
+
     return (
         <div className="w-[100%] bg-gray-100 pt-20 ">
             <h1 className="mb-10 text-center text-2xl font-bold">Shopping Cart</h1>
@@ -44,15 +48,14 @@ export default async function CartPage() {
                     </div>
                     <hr className="my-4" />
                     <div className="flex justify-between">
-                        <p className="text-lg font-bold">Total</p>
+
                         <div className="">
                             <p className="mb-1 text-lg font-bold">   Total: {formatPrice(cart?.subtotal || 0)}</p>
                             <p className="text-sm text-gray-700">including VAT</p>
                         </div>
                     </div>
-                    <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
-                        Check out
-                    </button>
+                    <CheckoutButton product={cart} />
+
                 </div>
             </div>
             <div className="flex flex-col w-full items-center bg-blue-white justify-center mt-2 mb-10">

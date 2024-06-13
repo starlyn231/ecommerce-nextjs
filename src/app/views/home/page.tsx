@@ -8,7 +8,7 @@ export default async function Home() {
     const productsItem = await prisma?.products.findMany({
         orderBy: { id: 'desc' },
     });
-    // console.log(productsItem)
+
     return (
         <div className="flex flex-col w-full items-center ">
             <Slider data={dataSlider} />

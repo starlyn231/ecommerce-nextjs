@@ -18,8 +18,8 @@ const sizeMockup: ISize[] = [
 export default async function ProductPage({ params }: { params: { id: string } }) {
     const id = params.id;
     const userId: any = cookies().get('localUserId')?.value;
-    console.log(userId)
-    const { name, imageUrl, description, price }: any = await getProduct(id);
+
+    const { name, imageUrl, description, price, size, color }: any = await getProduct(id);
     return (
 
         <div className="bg-gray-100 dark:bg-gray-800 py-8 h-full">
@@ -43,6 +43,8 @@ export default async function ProductPage({ params }: { params: { id: string } }
                                     productId={id}
                                     incrementProductQuantity={incrementProductQuantity}
                                     userId={userId}
+                                    color='rojo'
+                                    size='10'
                                 />
                             </div>
                             <div className="w-1/2 px-2">
@@ -93,7 +95,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                                     id="customer"
                                     name="customerId"
                                     className="peer block  rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                    defaultValue=""
+                                    defaultValue={size}
                                     aria-describedby="customer-error"
                                 >
                                     <option value="" disabled>

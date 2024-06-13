@@ -34,15 +34,15 @@ export default async function SubNavbar() {
                         Best Product
                     </Link>
 
-                    <Link href="/views/cart" className=" text-sm xl:text-base font-bold">
-                        Category
+                    <Link href={"/views/category/Men"} className=" text-sm xl:text-base font-bold">
+                        Men
                     </Link>
-                    <Link href="/views/cart" className=" text-sm xl:text-base font-bold">
+                    <Link href={"/views/category/women"} className=" text-sm xl:text-base font-bold">
                         Clothes
                     </Link>
 
-                    <Link href="/views/cart" className=" text-sm xl:text-base font-bold">
-                        Others
+                    <Link href={"/views/category/women"} className=" text-sm xl:text-base font-bold">
+                        Women
                     </Link>
                 </div>
             </div>

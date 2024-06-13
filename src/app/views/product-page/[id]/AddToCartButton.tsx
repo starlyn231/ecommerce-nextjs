@@ -4,14 +4,18 @@ import { useState, useTransition } from "react";
 interface AddToCartButtonProps {
 
     productId: string;
-    incrementProductQuantity: (userId: string, productId: string) => Promise<void>;
+    incrementProductQuantity: (userId: string, productId: string, color: string, size: string) => Promise<void>;
     userId: string,
+    color: string;
+    size: string;
 }
 
 export default function AddToCartButton({
     productId,
     incrementProductQuantity,
-    userId
+    userId,
+    color,
+    size
 
 }: AddToCartButtonProps) {
     const [isPending, startTransition] = useTransition();
@@ -22,7 +26,7 @@ export default function AddToCartButton({
             // Llama a la función del servidor
             setSuccess(false);
             startTransition(async () => {
-                await incrementProductQuantity(userId, productId);
+                await incrementProductQuantity(userId, productId, color, size);
             });
             // Si no hubo excepciones, entonces la transición fue exitosa
             setSuccess(true);

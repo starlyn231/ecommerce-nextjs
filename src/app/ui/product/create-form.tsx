@@ -4,7 +4,18 @@ import Link from "next/link";
 import { addProduct } from "@/app/lib/actions";
 import { Button } from "@/app/components/buttons";
 import FormSubmitButton from "@/app/components/FormSubmitButton";
+interface ICategory {
+    id: number;
+    label: string;
+}
 
+const categoryMockup: ICategory[] = [
+    { id: 1, label: 'Men' },
+    { id: 2, label: 'Women' },
+    { id: 3, label: 'Deal' },
+    { id: 4, label: 'Child' },
+
+];
 const Form = () => {
     const initialState = { message: null, errors: {} };
     const [state, dispatch] = useFormState(addProduct, initialState);
@@ -47,6 +58,36 @@ const Form = () => {
                             className="mt-2 text-sm text-red-500"
                         >
                             {state.errors.description.map((error: string) => (
+                                <p key={error}>{error}</p>
+                            ))}
+                        </div>
+                    ) : null}
+                    <div className="flex items-center mt-2">
+                        <select
+                            id="category"
+                            name="category"
+                            placeholder="Select Category"
+                            className="input-bordered input mb-3 w-full"
+
+                            aria-describedby="category-error"
+                        >
+                            <option value="" disabled>
+                                Select Category
+                            </option>
+                            {categoryMockup.map((category) => (
+                                <option key={category.id} value={category.label}>
+                                    {category.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    {state.errors?.category ? (
+                        <div
+                            id="category-error"
+                            aria-live="polite"
+                            className="mt-2 text-sm text-red-500"
+                        >
+                            {state.errors.category.map((error: string) => (
                                 <p key={error}>{error}</p>
                             ))}
                         </div>

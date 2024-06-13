@@ -24,7 +24,7 @@ const DrawerDefault = ({ data }: any) => {
             <Drawer open={open} onClose={closeDrawer} className="p-4">
                 <div className="mb-4 flex items-center justify-between bg-blue-gray-900 text-white">
                     <Typography variant="h5" color="white">
-                        {data.user.name}
+                        {data?.user?.name}
                     </Typography>
                     <IconButton variant="text" color="white" onClick={closeDrawer}>
                         <svg

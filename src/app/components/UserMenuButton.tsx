@@ -42,22 +42,22 @@ export default function UserMenuButton({ session }: UserMenuButtonProps) {
                 )}
 
             </PopoverHandler>
-            <PopoverContent {...triggers} className="z-50 max-w-[24rem]">
-                <ul
-                    tabIndex={0}
-                    className="dropdown-content menu rounded-box menu-sm z-30 mt-3 w-52 bg-base-100 p-2 shadow"
-                >
-                    <li>
-                        {user ? (<div className="flex flex-col">
-                            {user.email}
-                            <Link href="/api/auth/signout">Logout</Link>
+            <PopoverContent {...triggers} className="z-50 max-w-[15rem]">
+                <ul className="space-y-4 text-left text-base text-gray-500 p-2 dark:text-gray-400 w-[95%]" >
+
+                    {user ? (
+                        <div className=" grid grid-cols-1 divide-y divide-gray-900 ">
+                            <li className='line-clamp-1 truncate space-x-5 hover:underline overflow-hidden
+                             whitespace-nowrap text-ellipsis my-1 '>  {user.email}</li>
+
+                            <Link className=" border-none no-nderline text-current" href="/api/auth/signout"><li className='space-x-3 hover:underline my-1'>Logout</li></Link>
                         </div>
 
-                        ) : (
+                    ) : (
 
-                            <button onClick={() => signIn()}>Sign In</button>
-                        )}
-                    </li>
+                        <button onClick={() => signIn()}>Sign In</button>
+                    )}
+
                 </ul>
             </PopoverContent>
 

@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
                 const matchPassword = await bcrypt.compare(credentials.password, userFound.password)
                 if (!matchPassword) throw new Error('Wrong password')
 
-                console.log(' this is id: ' + userFound.id)
+
 
                 cookies().set('localUserId', userFound.id)
                 return {

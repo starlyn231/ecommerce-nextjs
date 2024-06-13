@@ -1,7 +1,7 @@
-import Footer from "../components/Footer";
-import Announcemenet from "../components/announcemenet";
-import NavbarSimple from "../components/navbar";
-import SubNavbar from "../components/sub-navbar";
+import Footer from '../components/Footer';
+import Announcemenet from '../components/announcemenet';
+import NavbarSimple from '../components/navbar';
+import SubNavbar from '../components/sub-navbar';
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-screen flex-col ">
@@ -11,10 +11,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <SubNavbar />
             </div>
 
-            <div className="flex h-screen flex-col">{children}
+            <div className="flex h-screen flex-col">
+                {children}
 
-                <div className="w-full " >
-
+                <div className="w-full ">
                     <Footer />
                 </div>
             </div>

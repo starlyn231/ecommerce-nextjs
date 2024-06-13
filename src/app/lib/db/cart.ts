@@ -24,13 +24,13 @@ export const getCart = async (userId: string) => {
                    include: { items: { include: { products: true } } },
                })
                : null; */
-        console.log(userId)
+
 
         const cart = await prisma.cart.findFirst({
             where: { userId: userId },
             include: { items: { include: { products: true } } },
         });
-        console.log('cart Getcart', cart)
+
         if (!cart) {
             return null;
         }
